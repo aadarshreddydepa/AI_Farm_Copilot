@@ -1,0 +1,12 @@
+fastapi==0.100.0
+uvicorn[standard]==0.22.0
+SQLAlchemy==2.1.0
+pydantic==1.10.11
+alembic==1.11.1
+python-multipart==0.0.6
+Pillow==10.1.0
+torch==2.2.0        # optional: needed if using pretrained model
+torchvision==0.17.0 # optional: pretrained model support
+aiofiles==23.1.0
+python-jose==3.3.0  # if you later add JWT auth
+passlib[bcrypt]==1.7.5
