@@ -1,6 +1,18 @@
 # app/crud.py
 from sqlalchemy.orm import Session
 from . import models, schemas
+from sqlalchemy.orm import Session
+from . import models, schemas
+
+def create_user(db: Session, user: schemas.UserCreate):
+    db_user = models.User(name=user.name, email=user.email)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+def get_users(db: Session):
+    return db.query(models.User).all()
 
 def create_image_record(db: Session, filename: str, filepath: str, uploaded_by: int = None):
     rec = models.ImageRecord(filename=filename, filepath=filepath, uploaded_by=uploaded_by)
