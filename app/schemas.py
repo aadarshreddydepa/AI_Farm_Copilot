@@ -19,6 +19,7 @@ class Token(BaseModel):
 class UserResponse(BaseModel):
     id: int
     created_at: datetime
+<<<<<<< HEAD
 
     class Config:
         orm_mode = True
@@ -50,6 +51,23 @@ class FarmCreate(FarmBase):
 class FarmResponse(FarmBase):
     id: int
     owner_id: int
+=======
+>>>>>>> 07b3d76417b516865314e4859eed80b43ad58a97
 
     class Config:
         orm_mode = True
+class UserBase(BaseModel):
+    username: str
+    email: EmailStr
+    full_name: Optional[str] = None
+    phone_number: Optional[str] = None
+    role: str
+
+    class Config:
+        orm_mode = True
+    
+class UserUpdate(BaseModel):
+    eamil: Optional[EmailStr] = None
+    full_name: Optional[str] = None
+    phone_number: Optional[str] = None
+    role: Optional[str] = None  
