@@ -21,6 +21,7 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     farms = relationship("Farm", back_populates="owner")
+    media_files = relationship("Media", back_populates="user") 
 class Farm(Base):
     __tablename__ = "farms"
 
@@ -33,6 +34,8 @@ class Farm(Base):
 
     owner_id = Column(Integer, ForeignKey("users.id"))
     owner = relationship("User", back_populates="farms")
+    media_files = relationship("Media", back_populates="farm")
+
 
 class Media(Base):
     __tablename__ = "media"
