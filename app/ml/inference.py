@@ -33,14 +33,17 @@ def _load_model():
     except Exception:
         _labels = None
 
-transform = T.Compose([
-    T.Resize(256),
-    T.CenterCrop(224),
-    T.ToTensor(),
-    T.Normalize(mean=[0.485, 0.456, 0.406],
-                std=[0.229, 0.224, 0.225]),
-])
-
+# NEW CORRECTED CODE
+if TORCH_AVAILABLE:
+    transform = T.Compose([
+        T.Resize(256),
+        T.CenterCrop(224),
+        T.ToTensor(),
+        T.Normalize(mean=[0.485, 0.456, 0.406],
+                    std=[0.229, 0.224, 0.225]),
+    ])
+else:
+    transform = None # or some placeholder if needed elsewhere
 def predict_image_bytes(image_bytes: bytes):
     """
     Returns a prediction dict: { label: str, score: float }
