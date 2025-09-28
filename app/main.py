@@ -1,8 +1,11 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+
+from app.routes import media_routes
 from . import models, schemas
 from .database import engine, get_db
 from .auth import get_password_hash, verify_password, create_access_token, get_current_user
+from app import auth
 
 app = FastAPI(title="AI Farm CoPilot - Backend (Hackathon)")
 
@@ -47,13 +50,6 @@ def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
 @app.get("/profile", response_model=schemas.UserProfile)
 def get_profile(current_user: models.User = Depends(get_current_user)):
     return current_user
-
-
-from fastapi import Depends, HTTPException, status
-from sqlalchemy.orm import Session
-from . import models, schemas
-from .database import get_db
-from .auth import get_current_user
 
 @app.put("/profile/update", response_model=schemas.UserOut)
 def update_profile(
@@ -118,3 +114,23 @@ def update_farm(farm_id: int, farm: schemas.FarmCreate, db: Session = Depends(ge
     db.commit()
     db.refresh(db_farm)
     return db_farm
+
+@app.delete("/farm/delete/{farm_id}", status_code=204)
+def delete_farm(farm_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    # Fetch the farm from the database
+    farm = db.query(models.Farm).filter(models.Farm.id == farm_id).first()
+    
+    if not farm:
+        raise HTTPException(status_code=404, detail="Farm not found")
+    
+    # Optional: Only allow the owner or admin to delete
+    if farm.owner_id != current_user.id and current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Not authorized to delete this farm")
+    
+    db.delete(farm)
+    db.commit()
+    
+    return {"detail": "Farm deleted successfully"}
+
+
+app.include_router(media_routes.router)
