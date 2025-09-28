@@ -37,3 +37,19 @@ class UserUpdate(BaseModel):
     full_name: Optional[str] = None
     phone_number: Optional[str] = None
     role: Optional[str] = None  
+
+class FarmBase(BaseModel):
+    farm_name: str
+    location: Optional[str] = None
+    soil_type: Optional[str] = None
+    area: Optional[float] = None
+
+class FarmCreate(FarmBase):
+    pass
+
+class FarmResponse(FarmBase):
+    id: int
+    owner_id: int
+
+    class Config:
+        orm_mode = True
