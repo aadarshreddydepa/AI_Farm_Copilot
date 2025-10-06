@@ -109,7 +109,6 @@ if __name__ == "__main__":
         print("Coordinates:", coords)
         weather = fetcher.get_weather(coords["lat"], coords["lon"])
         print("Weather:", weather)
-        print()
         # 2️⃣ Agro data
         agro_data = fetcher.get_agro_data(coords["lat"], coords["lon"])
         print("Agro Data:", agro_data)
